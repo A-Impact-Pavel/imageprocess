@@ -4,6 +4,7 @@
   --accent: #38bdf8;
   --text: #e2e8f0;
   --muted: #94a3b8;
+  --err: #f87171;
 }
 
 * { box-sizing: border-box; }
@@ -15,14 +16,14 @@ body {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background: radial-gradient(1200px 600px at 50% -10%, #1e3a5f, var(--bg));
   color: var(--text);
 }
 
 .card {
   width: 100%;
-  max-width: 440px;
+  max-width: 480px;
   background: var(--card);
   border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 18px;
@@ -38,9 +39,8 @@ h1 { margin: 0 0 8px; font-size: 1.6rem; }
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 160px;
+  min-height: 140px;
   padding: 20px;
-  margin-bottom: 18px;
   border: 2px dashed rgba(148, 163, 184, 0.4);
   border-radius: 14px;
   color: var(--muted);
@@ -50,10 +50,41 @@ h1 { margin: 0 0 8px; font-size: 1.6rem; }
 .drop.dragover { border-color: var(--accent); background: rgba(56, 189, 248, 0.08); }
 .drop.has-file { border-style: solid; border-color: var(--accent); color: var(--text); }
 
+.preview-wrap {
+  margin: 18px 0 10px;
+  background: repeating-conic-gradient(#0b1220 0% 25%, #111c30 0% 50%) 50% / 20px 20px;
+  border-radius: 12px;
+  padding: 10px;
+}
+#preview { max-width: 100%; max-height: 240px; border-radius: 8px; }
+
+.meta { margin: 6px 0; color: var(--muted); font-size: 0.85rem; }
+.meta.result { color: var(--text); font-weight: 600; }
+.err { margin: 8px 0; color: var(--err); font-size: 0.85rem; }
+
+.modes { display: flex; gap: 16px; justify-content: center; margin: 18px 0 12px; flex-wrap: wrap; }
+.radio { color: var(--text); font-size: 0.9rem; cursor: pointer; }
+
+.controls { margin: 10px 0 4px; }
+.controls .row { display: flex; gap: 12px; justify-content: center; }
+.controls label { color: var(--muted); font-size: 0.9rem; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+input[type="number"] {
+  width: 110px;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #0b1220;
+  color: var(--text);
+}
+output { color: var(--accent); font-weight: 600; }
+
 button, .btn {
   display: inline-block;
   width: 100%;
   padding: 14px 18px;
+  margin-top: 12px;
   border: 0;
   border-radius: 12px;
   background: var(--accent);
@@ -63,16 +94,4 @@ button, .btn {
   cursor: pointer;
   text-decoration: none;
 }
-.btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); margin-top: 16px; }
-
-.qr {
-  width: 320px;
-  max-width: 100%;
-  height: auto;
-  background: #fff;
-  border-radius: 14px;
-  padding: 12px;
-}
-
-.link { margin: 16px 0 0; word-break: break-all; font-size: 0.85rem; }
-.link a { color: var(--accent); }
+.btn { background: transparent; color: var(--accent); border: 1px solid var(--accent); }

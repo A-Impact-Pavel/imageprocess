@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>שינוי גודל תמונה</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<main class="card">
+  <h1>שינוי גודל תמונה</h1>
+  <p class="sub">העלו תמונה, בחרו גודל חדש, והורידו. הכל קורה בדפדפן — התמונה לא נשלחת לשום שרת.</p>
+
+  <label class="drop" id="drop">
+    <input type="file" id="file" accept="image/*" hidden />
+    <span id="dropText">לחצו לבחירת תמונה, או גררו לכאן</span>
+  </label>
+
+  <section id="editor" hidden>
+    <div class="preview-wrap">
+      <img id="preview" alt="תצוגה מקדימה" />
+    </div>
+    <p class="meta" id="origMeta"></p>
+
+    <div class="modes">
+      <label class="radio"><input type="radio" name="mode" value="percent" checked /> אחוז קנה מידה</label>
+      <label class="radio"><input type="radio" name="mode" value="pixels" /> רוחב/גובה בפיקסלים</label>
+    </div>
+
+    <div class="controls" id="percentControls">
+      <label for="percent">אחוז: <output id="percentOut">50%</output></label>
+      <input type="range" id="percent" min="1" max="200" value="50" />
+    </div>
+
+    <div class="controls" id="pixelControls" hidden>
+      <div class="row">
+        <label>רוחב <input type="number" id="width" min="1" placeholder="px" /></label>
+        <label>גובה <input type="number" id="height" min="1" placeholder="px" /></label>
+      </div>
+      <label class="radio"><input type="checkbox" id="keepAspect" checked /> שמירת יחס</label>
+    </div>
+
+    <p class="meta result" id="resultMeta"></p>
+    <p class="err" id="err" hidden></p>
+
+    <button id="download">הורדת התמונה</button>
+    <button class="btn" id="reset">תמונה אחרת</button>
+  </section>
+</main>
+
+<script src="/resize-math.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

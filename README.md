@@ -1,11 +1,18 @@
 # imageprocess
 
-Upload an image, get a QR code. Scan the QR on any phone (iPhone/Android, any
-network) and the image downloads.
+Upload an image, resize it, and download the result. The resizing happens
+**entirely in your browser** — the image is never uploaded to any server.
 
-> A QR code can't hold an image — it's too small. So the app hosts your image at
-> a public URL and the QR encodes that link. Scanning opens the link and the
-> image downloads.
+## Features
+
+- Drag & drop or pick an image.
+- Resize by **percentage** (e.g. 50%) or by exact **width/height in pixels**
+  (with an optional "keep aspect ratio" lock).
+- Live preview of the new dimensions before downloading.
+- One-click download of the resized image.
+
+Supported formats: JPG, PNG, WebP, GIF. (HEIC from iPhone often can't be decoded
+by browsers — convert to JPG/PNG first; the app shows a clear message if so.)
 
 ## Run locally
 
@@ -21,38 +28,24 @@ Run the tests:
 npm test
 ```
 
-> Note: when running locally, the QR points to your machine's address, so only
-> devices on the same network can download. For "any phone anywhere", deploy it
-> (below) so the QR points to a public URL.
-
-## Deploy (free, public — works for any phone)
-
-This repo is ready for **Render**:
-
-1. Go to <https://render.com> and sign up (no credit card needed).
-2. **New → Web Service → Build and deploy from a Git repository**.
-3. Connect this repo (`A-Impact-Pavel/imageprocess`). Render reads
-   [`render.yaml`](render.yaml) automatically — runtime Node, build `npm install`,
-   start `npm start`, health check `/healthz`.
-4. Click **Create**. After it deploys you get a public URL like
-   `https://imageprocess.onrender.com`.
-5. Open that URL, upload an image, scan the QR with any phone — it downloads.
-
 ## How it works
 
-| Route       | Purpose |
-|-------------|---------|
-| `GET /`     | Upload page (pick or drag an image). |
-| `POST /upload` | Saves the file, builds the public link, shows the QR + link. |
-| `GET /i/:id`   | Streams the image as a download. The QR points here. |
-| `GET /healthz` | Health check. |
+The server (Express) only serves static files and a `/healthz` check. All image
+work is client-side:
 
-## Known limitation
+- [public/index.html](public/index.html) — the UI.
+- [public/app.js](public/app.js) — loads the image, draws it onto a `<canvas>`
+  at the chosen size, and exports a downloadable blob.
+- [public/resize-math.js](public/resize-math.js) — pure dimension math
+  (percent / pixels / aspect-ratio), shared with the tests.
 
-Render's **free tier filesystem is ephemeral**: uploaded files reset on restart
-or redeploy, and the service sleeps after ~15 min idle (the first request after
-sleep is slow). For permanent storage, add a Render persistent disk or switch
-storage to a cloud image host (e.g. Cloudinary).
+Because everything runs in the browser, you can also just open the page from any
+static host — no backend needed.
 
-See [the design doc](docs/superpowers/specs/2026-06-25-image-qr-download-design.md)
-for details.
+## Deploy (optional)
+
+The repo is ready for **Render** (see [`render.yaml`](render.yaml)): connect the
+repo, and it serves the static page. Or host `public/` on any static host
+(GitHub Pages, Netlify, etc.).
+
+See [the design doc](docs/superpowers/specs/2026-06-25-image-resize-design.md).
